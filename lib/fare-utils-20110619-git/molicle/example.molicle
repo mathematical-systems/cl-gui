@@ -1,0 +1,38 @@
+;; -*- Lisp -*-
+#.(begin :name "foo")
+
+(eval-when (:compile-toplevel :execute)
+  (defmacro initialize-foo ()
+    (defparameter *foo* 0)
+    (molicle:register-final-form '(finalize-foo))
+    '())
+  (initialize-foo))
+
+(eval-when (:compile-toplevel :execute)
+  (defmacro foo ()
+    `(format t "~&Executing the ~:R occurrence of FOO~%" ,(incf *foo*))))
+
+(eval-when (:compile-toplevel :execute)
+  (defmacro finalize-foo ()
+    `(progn
+       (eval-when (:compile-toplevel :execute)
+         (defun foo-count ()
+           ,*foo*))
+       (eval-when (:load-toplevel :execute)
+         (format t "~&Done compiling foo. FOO has been used ~A times.~%" ,*foo*)))))
+
+(format t "This file is going to expand macro FOO ~A times" (foo-count))
+
+(foo)
+
+(loop :repeat 3 :do (foo))
+
+(defvar *nofun* (constantly nil))
+
+(when (funcall *nofun*)
+  (foo))
+
+(when (yes-or-no-p "Would you like to call FOO?")
+  (foo))
+
+#.[:end].#

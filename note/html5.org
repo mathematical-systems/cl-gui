@@ -1,0 +1,49 @@
+* New standard
+
+- Device access
+  - camera
+  - geolocation
+  - contacts
+  - SMS
+  - orientation
+  - gyro
+  - multi-touch
+  - speech recognition
+- WebFonts
+- Video
+- Audio
+- Graphics
+- CSS Styling & Layout
+- Semantic Tags
+- JavaScript
+- File Systems/DB/App Cache
+- Worker parallel processing
+- x-App messaging
+- Cache manifest
+- Server & Service
+  - HTTP
+  - AJAX
+  - Events
+  - Sockets
+  - Cross Origin resource sharing
+  - SSL
+  - More...
+
+* Langauges
+
+** separation
+
+- HTML (content)
+- Javascript (logic)
+- CSS (style)
+
+Reuse is easy
+
+** flexibility
+
+- graceful degration
+
+unsupported features are ignored
+
+- fluid layouts
+

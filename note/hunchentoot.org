@@ -1,0 +1,250 @@
+* memo for delivery
+
+the following values need to be changed
+
+- acceptor-document-root
+- acceptor-error-template-directory
+
+* acceptor customization
+
+- start
+- calls start-listening
+- calls execute-acceptor
+- calls accept-connections
+- callback handle-incoming-connection
+- calls process-connection (maybe in a new thread)
+- calls initialize-connection-stream
+- select and calls a function which handles the request
+- send reply
+- calls reset-connection-stream (unless persistent)
+
+* taskmaster
+
+each acceptor has a taskmaster associated with it at creation time.
+
+taskmaster distribute the work of accepting and handling incoming
+connections
+
+thread pool with max size :max-thread-count
+
+if more than :max-accept-account requests are outstanding, then a
++HTTP-SERVICE-UNAVAILABLE+ error will be generated.
+
+** classes
+- single-threaded-taskmaster
+- one-thread-per-connection-taskmaster
+
+** methods
+
+- execute-acceptor
+- handle-incoming-connection
+- create-taskmaster-thread
+- shutdown
+- taskmaster-acceptor
+
+* request dispatch and handling
+
+- process-connection
+- calls process-request
+- calls handle-request
+  default method of handle-request sets up standard logging and error
+  handling before it calls the acceptor's request dispatcher
+- calls acceptor-dispatch-request
+- default tries to server a static file relative to
+  acceptor-document-root
+- request handler modifies the reply object if necessary
+- returning body in the form of a string or a binary sequence
+- can also call send-headers and write directly to a stream
+
+** easy-handler framework
+
+walk through *easy-handler-alist*
+
+** dispatcher
+
+- create-prefix-dispatcher
+- create-regex-dispatcher
+- create-folder-dispatcher-and-handler
+- create-static-file-dispatcher-and-handler
+- define-easy-handler
+
+* request
+
+- *request*
+- parameter
+- get-parameter
+- post-parameter
+- get-parameters*
+- post-parameters*
+
+** etc.
+- cookie-in
+- cookies-in*
+- query-string*
+- script-name*
+- request-uri*
+- header-in*
+- headers-in*
+- aux-request-value
+- delete-aux-request-value
+- authorization
+- *hunchentoot-default-external-format*
+- *file-upload-hook*
+- raw-post-data
+- server-protocol
+
+* reply
+
+for each incoming request, the acceptor creates a reply object and
+make it available to handlers via the special variable *reply*
+
+- header-out
+- headers-out*
+- content-length*
+- content-type*
+- cookie-out
+- cookie-out*
+- return-code*
+- send-headers
+- reply-external-format*
+- *default-content-type*
+
+* session
+
+don't store sensitive data in session
+
+- start-session
+- *session*
+- session-id
+- session-value
+- (setf session-value)
+- delete-session-value
+
+- remove-session
+- reset-sessions
+- *session-max-time*
+- *session-gc-frequency*
+- session-gc
+- *session-remove-hook*
+- session-remote-addr
+- session-user-agent
+- session-start
+
+** mechanism
+
+- publicly visible part of a session is encoded using a secret
+- stored using a cookie (or GET parameter) name
+- each session receives a new id when created
+- garbage collected
+- can be distributed over different "databases"
+- global lock
+
+** customization
+
+- create your own class to store state (no need to inherit from
+  session)
+- session-verify
+- session-cookie-value
+- everything else need to be take care of
+
+- *session-secret*
+- reset-session-secret
+- session-cookie-name (default "hunchentoot-session")
+- session-created
+- next-session-id
+- session-db
+- session-db-lock
+
+* cookies
+
+outgoing cookies are store in the request's REPLY object
+
+(defclass cookie ()
+  ((name :initarg :name
+         :reader cookie-name
+         :type string
+         :documentation "The name of the cookie - a string.")
+   (value :initarg :value
+          :accessor cookie-value
+          :initform ""
+          :documentation "The value of the cookie. Will be URL-encoded when sent to the browser.")
+   (expires :initarg :expires
+            :initform nil
+            :accessor cookie-expires
+            :documentation "The time (a universal time) when the cookie expires (or NIL).")
+   (path :initarg :path
+         :initform nil
+         :accessor cookie-path
+         :documentation "The path this cookie is valid for (or NIL).")
+   (domain :initarg :domain
+           :initform nil
+           :accessor cookie-domain
+           :documentation "The domain this cookie is valid for (or NIL).")
+   (secure :initarg :secure
+           :initform nil
+           :accessor cookie-secure
+           :documentation "A generalized boolean denoting whether this is a secure cookie.")
+   (http-only :initarg :http-only
+              :initform nil
+              :accessor cookie-http-only
+              :documentation "A generalized boolean denoting whether this is a HttpOnly cookie.")))
+
+- set-cookie
+- set-cookie*
+
+* logging
+
+accesses and diagnostic messages
+
+- log-message*
+- *log-lisp-errors-p* (T)
+- *log-lisp-backtraces-p* (T)
+- *log-lisp-warnings-p* (T)
+
+** conditions and error handling
+
+when an error occurs, hunchentoot's default behavior is to catch the
+error, log it and optionally display it to the client in the HTML
+response.
+
+- *catch-errors-p* (T)
+- *show-lisp-errors-p* (NIL)
+- *show-lisp-backtraces-p* (T)
+- maybe-invoke-debugger
+
+- hunchentoot-condition
+- hunchentoot-error
+- parameter-error
+- hunchentoot-warning
+
+* misc
+
+- abort-request-handler
+- handle-if-modified-since
+- handle-static-file
+- redirect
+- require-authorization
+- no-cache
+- ssl-p
+- reason-phrase
+- rfc-1123-date
+- url-encode
+- url-decode
+- escape-for-html
+- http-token-p
+- mime-type
+- within-request-p
+- *tmp-directory*
+- *header-stream* (for debugging)
+- *cleanup-function*
+- *cleanup-interval*
+
+* testing
+
+- hunchentoot-test:test-hunchentoot
+
+* debugging
+
+- set *catch-errors-p* to NIL
+- set *show-lisp-errors-p* to T
+

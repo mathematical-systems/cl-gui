@@ -1,0 +1,4 @@
+* investigate clojurescript
+* safe read and eval
+* restart connection thread when encoding/decoding error
+* synchronized funcall

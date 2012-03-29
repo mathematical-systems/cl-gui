@@ -1,0 +1,50 @@
+* Useful Common Lisp libraries
+
+- slime-proxy
+
+Emacs integration (parenscript, lisp)
+
+for plain javascript, use slime-js
+
+- parenscript
+
+Lisp->javascript compiler
+
+Write js in sexp and CL
+
+- hunchensocket
+
+websocket server
+
+- hunchen.io
+
+socket.io server implementation in CL
+
+- edgelisp
+
+  CL implementation in javascript
+  https://github.com/manuel/edgelisp
+
+
+* Useful javascript libraries
+
+- jQuery
+
+  Dom manipulation
+
+- Socket.IO
+
+  Portable network interface
+
+- processing.js
+
+  2D/3D Graphics
+
+- Closure Tools (Google)
+
+- MathJS
+
+- InfoVis
+
+  Data visualization
+

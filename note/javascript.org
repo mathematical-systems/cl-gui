@@ -1,0 +1,341 @@
+-*- mode: org -*-
+
+Below applies to Javascript 1.5
+
+* Browser support
+
+- Firefox 4
+  
+  1.8.5
+
+- Chrome/Safari
+  
+  1.6
+
+* Primitive types
+
+- boolean
+  true, false
+  
+- number
+  64-bit floating point
+  no integer type
+  NaN, Infinity
+
+- string
+  immutable
+  '' or ""
+
+* Special value
+
+- null
+- undefined
+
+* Numbers
+
+- Math object
+  e.g. Math.PI
+
+- parseInt
+  NOTE: always provide the base. e.g. parseInt('010', 10);
+
+- parseFloat
+
+- tricks: use + to convert values to numbers
+  e.g. + '42' => 42
+  but, parseInt('11hello', 10) => 10
+       + '11hello' => NaN
+
+- NaN
+  isNaN()
+
+- Infinity, -Infinity
+
+* String
+
+Adding(+) an empty string to X is a useful way of converting X to
+string
+
+* Equality
+
+== will do type conversion
+=== does not
+
+!=, !==
+
+* Bitwise operator
+
+& | ^ ~ << >> >>>(zero-fill)
+
+* Object (or Hashtable)
+
+var h = {}
+var h = new Object();
+
+h["name"] // better, can use reserved keywords
+h.name
+
+NOTE: Array and functions are implemented as objects
+
+- 'in' operator
+
+* Array
+
+var a = [];
+var a = new Array();
+
+a[0];
+
+- iteration idiom:
+
+for (var i = 0, len = a.length; i < len; i++){
+  ...
+}
+
+- append idiom:
+
+a[a.length] = item;
+
+* Functions
+
+A function is an object. It can contain members just as other
+objects. This allows a function to contain its own data tables. It
+also allows an object to act as a class, containing a constructor and
+a set of related methods.
+
+A function can be a member of an object. When a function is a member
+of an object, it is called a method. There is a special variable,
+called this that is set to the object when a method of the object is
+called.
+
+- no return
+  undefined will be returned
+
+- arguments variable
+  arguments is an array-like object
+
+- apply
+  avg(1,2,3) = avg.apply(null, [1,2,3])
+
+- inner function
+
+- anonymous function
+
+- named anonymous function
+
+e.g.
+
+var charsInBody = (function counter(elm) {
+    if (elm.nodeType == 3) { // TEXT_NODE
+        return elm.nodeValue.length;
+    }
+    var count = 0;
+    for (var i = 0, child; child = elm.childNodes[i]; i++) {
+        count += counter(child);
+    }
+    return count;
+})(document.body);
+
+* 'this'
+
+if a function is called using a dot notation or bracket notation, that
+object becomes 'this', otherwise, 'this' refers to the global object
+(in the browser, it's probably DOMWindow)
+
+the first argument of 'apply' and 'call' will be bound to 'this'
+
+e.g. 
+
+a.b() equals to c = a.b; c.call(a)
+
+* 'new' (Constructor)
+
+By convention, the name of a constructor is written with an initial capital.
+
+  new Constructor(parameters...)
+
+The new prefix changes the meaning of the 'this' variable. Instead of
+its usual value, 'this' will be the new object. The body of the
+constructor function will usually initialize the object's members. The
+constructor will return the new object, unless explicitly overridden
+with the return statement.
+
+The constructed object will contain a secret prototype link field,
+which contains a reference to the constructor's prototype member.
+
+prototype forms part of a lookup chain. As a result, anything assigned
+to 'prototype' becomes available to all instances of that constructor
+via 'this' object.
+
+e.g.
+
+function Person(first, last) {
+    this.first = first;
+    this.last = last;
+}
+Person.prototype.fullName = function() {
+    return this.first + ' ' + this.last;
+}
+Person.prototype.fullNameReversed = function() {
+    return this.last + ', ' + this.first;
+}
+
+NOTE: the root of the chain is Object.prototype
+
+* Prototype
+
+Objects contain a hidden link property. This link points to the
+prototype member of the constructor of the object.
+
+When items are accessed from an object by the dot notation or the
+subscript notation, if the item is not found in the object then the
+link object is examined. If it is not found in the link object, and if
+the link object itself has a link object, then that link object is
+examined. If the chain of link objects is exhausted, then undefined is
+returned.
+
+This use of prototype link chains provides a sort of inheritance.
+
+Members can be added to the prototype by assignment. Here we define a
+new class Demo, which inherits from class Ancestor, and adds its own
+method foo.
+
+function Demo() {}
+Demo.prototype = new Ancestor();
+Demo.prototype.foo = function () {};
+
+* Inheritance
+
+If we want to make B to inherit A,
+
+  B.prototype = new A();
+  B.prototype.constructor = B; // correct the constructor
+
+- check inheritance
+
+  instanceof operator
+
+* Vars
+
+Any variables used in a function which are not explicitly defined as
+var are assumed to belong to an outer scope, possibly to the Global
+Object.
+
+* Return
+
+JavaScript does not have a void type, so every function must return a
+value. The default value is undefined, except for constructors, where
+the default return value is this.
+
+* Statements
+
+- var
+- if-then-else
+- switch
+  works for number and string
+  need break
+  comparison using ===
+- for
+- while
+- do
+- break
+- continue
+- return
+- try
+- throw
+- with
+  should not be used
+
+* False
+
+false, null, undefined, "", 0, NaN
+
+* Global Object
+
+In the web browsers, window and self are members of the Global Object
+which point to the Global Object, thus giving an indirect way of
+addressing it.
+
+If a variable is accessed, but is not found in the current scope, it
+is looked for in the Global Object. If it is not found there, an error
+will result.
+
+- context
+
+* Scoping
+
+- only 'function()' creates a new scope, 'var' does not, block does
+  not.
+
+  NOTE: e.g. variables defined in if statement, it will be visible to
+  the entire function
+  
+  anonymous function can be used to simulate block scope
+
+- do not use 'this' in anonymous functions, it depends on the
+  bindings...
+
+  it can also be used as clever tricks
+
+* Design flaws
+
+- +
+  concatenation with type coercion
+
+- with statement
+
+- semicolon insertion
+
+- notation for regexp
+
+- non-reserved keywords in hashtable literal notation
+
+* Regular expression
+TODO
+
+* label
+
+Controlling nested loops
+
+- break label
+
+- continue label
+
+* 'for'
+
+- for...in
+  iterate over keys
+  
+- for each...in
+  iterate over properties
+
+* throw, try...catch...finally
+TODO
+
+* Date
+TODO
+
+* Getter and Setter
+
+e.g.
+
+var o = {a: 7, get b() {return this.a + 1;}, set c(x) {this.a = x / 2}};
+
+var d = Date.prototype;
+d.__defineGetter__("year", function() { return this.getFullYear(); });
+d.__defineSetter__("year", function(y) { this.setFullYear(y); });
+
+* 'delete'
+TODO
+
+* __proto__
+
+The special property __proto__ is set when an object is constructed;
+it is set to the value of the constructor's prototype property.  So
+the expression  new Foo() creates an object with __proto__ ==
+Foo.prototype. Consequently, changes to the properties of
+Foo.prototype alters the property lookup for all objects that were
+created by new Foo(). 
+
+* Closure
+TODO

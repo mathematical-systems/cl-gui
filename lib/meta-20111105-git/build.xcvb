@@ -1,0 +1,9 @@
+#+xcvb
+(module
+ (:fullname
+  "meta"
+  :depends-on
+  ("package" "meta-src")
+  :supersedes-asdf
+  ("meta")))
+

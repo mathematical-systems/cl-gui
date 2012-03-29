@@ -1,0 +1,158 @@
+;;; -*- mode: common-lisp -*-
+
+(ext-loader-setpath "Ext" "extjs/src")
+(ext-enable-loader)
+(ext-require-all)
+
+(defvar temp)
+(defvar statuses-area)
+
+(defun show-account-input-panel ()
+  (make-ext-instance
+   "Ext.form.Panel"
+   (create :title "Enter twitter account"
+           :render-to (ext-getbody)
+           :frame t
+           :width 300
+           :default-type "textfield"
+           :items (list (create :field-label "Twitter Account"
+                                :name "account-input"
+                                :allow-blank nil))
+           :buttons (list (create :text "Get Data"
+                                  :handler (lambda ()
+                                             (let* ((form (chain this (up "form") (get-form)))
+                                                    (account (@ (chain form (get-field-values))
+                                                                "account-input")))
+                                               (chain lisp (emit "funcall"
+                                                                 "cl-gui"
+                                                                 "load-twitter-data"
+                                                                 (list account))))))))))
+
+#+nil
+(defun show-status-view-panel ()
+  (let* ((model (ext-define "Statuses"
+                            (create :extends "Ext.data.Model"
+                                    :fields (list (create :name "Date"
+                                                          :type "string")
+                                                  (create :name "Status"
+                                                          :type "string")))))
+         (data (@ lisp-data "twitter"))
+         (store
+           (make-ext-instance
+            "Ext.data.Store"
+            (create :model "Statuses"
+                    ;; :autoLoad t
+                    :data data
+                    :proxy (create :type "memory"
+                                   :reader (create :type "array"
+                                                   :root "statuses")))))
+         (status-view-panel
+           (make-ext-instance
+            "Ext.grid.Panel"
+            (create :title "Statuses"
+                    :store store
+                    :render-to (ext-getbody)))))))
+
+(defun format-statuses (statuses)
+  (let ((texts ""))
+    (dolist (s statuses)
+      (setf texts (+ texts (aref s 0) "," (aref s 1) #\Newline)))
+    texts))
+
+(defun show-status-view-panel (statuses)
+  (let* ((texts (format-statuses statuses))
+         (form (make-ext-instance
+                "Ext.form.Panel"
+                (create :title "Statuses"
+                        :render-to (ext-getbody)
+                        :width 600
+                        :items (list (create :xtype "textareafield"
+                                             :width 600
+                                             :height 400
+                                             :name "Statuses"
+                                             :value texts))))))
+    (setf statuses-area
+          (@ (chain form (get-form) (get-fields) items) 0))))
+
+(defun show-nmf-calc-panel (screen-name)
+  (let* ((panel (make-ext-instance
+                 "Ext.form.Panel"
+                 (create :title (+ "NMF: " screen-name)
+                         :render-to (ext-getbody)
+                         :frame t
+                         :width 300
+                         :default-type "numberfield"
+                         :items (list (create field-label "Least #Term"
+                                              :name "least"
+                                              :value 5)
+                                      (create field-label "Features"
+                                              :name "features"
+                                              :value 10)
+                                      (create field-label "Cost Function"
+                                              :name "cost"
+                                              :xtype "textfield"
+                                              :value "Euclidean")
+                                      (create field-label "Iteration"
+                                              :name "iteration"
+                                              :value 100)
+                                      (create field-label "Term and Document"
+                                              :name "term"
+                                              :value 10))
+                         :buttons (list (create :text "Calc")
+                                        (create :text "Cancel"))))))
+    ))
+
+(defun show-statuses ()
+  (let* ((twitter (get-obj "twitter"))
+         (screen-name (@ twitter "screenName"))
+         (statuses (@ twitter "statuses")))
+    (show-status-view-panel statuses)
+    ;; (show-nmf-calc-panel screen-name)
+    ))
+
+(defun update-statuses ()
+  (let* ((twitter (get-obj "statuses update"))
+         (screen-name (@ twitter "screenName"))
+         (statuses (@ twitter "statuses")))
+    (chain statuses-area (set-value (format-statuses statuses)))))
+
+(defun show-get-friends-panel (username)
+  (make-ext-instance
+   "Ext.form.Panel"
+   (create :title (+ "Get friend ids for " username)
+           :render-to (ext-getbody)
+           :frame t
+           :width 200
+           :items (list (create :field-label "Breadth"
+                                :name "breadth"
+                                :xtype "numberfield"
+                                :value 5
+                                :allow-blank nil))
+           :buttons (list (create :text "Get Friend IDs"
+                                  :handler (lambda ()
+                                             (let* ((form (chain this (up "form") (get-form)))
+                                                    (breadth (@ (chain form (get-field-values)) "breadth")))
+                                               (chain lisp (emit "funcall"
+                                                                 "cl-gui"
+                                                                 "load-friend-ids"
+                                                                 (list username breadth))))))))))
+
+(def-ext-main ()
+  (add-data-listener
+   "twitter"
+   (lambda (obj)
+     (declare (ignorable obj))
+     (if (not (@ obj "friendsNetwork"))
+         (progn
+           (show-statuses)
+           (show-get-friends-panel (@ obj "screenName")))
+         (show-vis))))
+  (add-data-listener
+   "statuses update"
+   (lambda (obj)
+     (declare (ignorable obj))
+     (update-statuses)))
+  ;;
+  (show-account-input-panel)
+  )
+

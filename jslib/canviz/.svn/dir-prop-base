@@ -1,0 +1,9 @@
+K 13
+svn:externals
+V 108
+^/vendor/excanvas/0001@7 excanvas
+^/path/trunk/libs@262 path
+^/vendor/prototype/1.6.0.3/dist@135 prototype
+
+
+END

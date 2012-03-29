@@ -1,0 +1,41 @@
+#+xcvb
+(module
+ (:fullname
+  "fare-utils"
+  :depends-on
+  ("package"
+   "base/utils"
+   "base/strings"
+   "base/symbols"
+   "base/macros"
+   "base/lists"
+   "base/packages"
+   "base/objects"
+   "base/streams"
+   "base/hash-tables"
+   "base/more-strings"
+   "filesystem/pathnames"
+   "filesystem/files"
+   "filesystem/atomic"
+   "unbaked/msv"
+   "interface/memoization"
+   "interface/interface"
+   "interface/eq"
+   "interface/order"
+   "pure/package"
+   "pure/map"
+   "pure/alist"
+   "pure/tree"
+   "pure/hash-table"
+   "pure/fmim"
+   "pure/encoded-key-map"
+   "stateful/package"
+   "stateful/container"
+   "stateful/binary-heap"
+   "stateful/binomial-heap"
+   "stateful/fifo"
+   "stateful/dllist"
+   "stateful/sorting")
+  :supersedes-asdf
+  ("fare-utils")))
+

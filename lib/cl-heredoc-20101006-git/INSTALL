@@ -1,0 +1,25 @@
+Installation Instructions
+*************************
+
+Copyright (C) 2009, 2010 Alexander Kahl
+
+This file is free documentation;
+ I give unlimited permission to copy, distribute and modify it.
+
+
+Dependencies
+============
+Foundation:
+- Any ANSI-compliant CL implementation
+
+CL libraries (all asdf-install:able):
+- Stefil           | http://common-lisp.net/project/stefil/
+
+Your distribution might provide some of these libraries but the names may
+differ, i.e. try to search for the libraries' names prefixed with `cl-` if not
+already present.
+
+
+Installation
+============
+RTF ASDF manual ;)

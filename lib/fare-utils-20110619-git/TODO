@@ -1,0 +1,94 @@
+TODO
+* document what works and what doesn't
+* document all those functions, classes, etc., that do work.
+* export all the symbols correctly.
+* import trie from pangram thingie
+
+* DECLAIM - distributed execution of common-lisp agents with intent and mobility
+
+* move stateful datastructures to a stateful: package.
+  Question: should I use separate interfaces as in the pure: package,
+  or dispatch directly on objects as in usual OO style?
+
+* have generic state-passing updaters in the style of setf.
+  (updatef (lookup i m k) v) ==>  ((update-expander lookup) v i m k) ==> (insert i m k v)
+  OK, but how does it compose???
+
+   <Fare> should updatef "magically" recurse through all functions that
+   have an updater defined?
+   <drewc> Fare: what do you mean?
+   <Fare> i.e. (updatef (car (cdr '(1 2 3)) 4) ==> (4 3) OR (1 4 3)
+   <drewc> oh
+   <adeht> Fare: no
+   <pkhuong_> Fare: I would say yes.
+   * drewc is on the fence
+   * `3b votes 4
+   <adeht> so (let ((x (cdr '(1 2 3)))) (updatef (car x) 4)) will give
+   different results?
+   * Fare wonders.
+   <Fare> `3b: your answer defeats the whole purpose of updatef!
+   <pkhuong_> mm.. true. That is an issue.
+   <`3b> Fare: yeah, that was sort of the intent :)
+   <caelan> (updatef (car (cdr '(1 2 3)) 4) => (4 3) seems mystifying
+   * Fare obviously hadn't thunk it through before implementing
+   <`3b> Fare: seems like it might be more useful as a binding form or
+   something
+   <Fare> `3b: OK. gimme a syntax for it.
+   <drewc> binding? it's a monad
+   <`3b> Fare: if i tried, i'd probably fall into some DSL pit trying
+   to build the ability to do multiple changes at once :)
+   <Fare> drewc: what is your take
+   <Fare> (updatef (compose 'car 'cdr)  '(1 2 3)) 4) ==> (1 4 3) ?
+   <adeht> (update (cadr '(1 2 3)) 4) ==> (1 4 3)
+   <adeht> :)
+   <drewc> Fare: i'm not sure really. magically composing things seems
+   a little too magical to me
+   <Fare> so how am I to specify that I'm updating something deep?
+   <pkhuong_> Fare: nested updatef.
+   <Fare> (update-accessor (x) (car (cdr x)) 1) ?
+   <pkhuong_> meh. I think you really do want to update deeply, and
+   even setq variables.
+   <Fare> (updatef (x #((a 1) (b 2) (c 3))) (car (aref x 1)) 'd) ?
+   <Fare> ==> #((a 1) (d 2)(c 3))
+   <Fare> drewc: (update (car (aref (updating #((a b) (c d))) 2)) 'e)
+   ==> #((a b) (c d) (e nil)) ?
+   <pkhuong_> Fare: now, do you want to default to setq on variables?
+   <Fare> no, no setq - the whole point is that it should be pure
+   * Fare wonders about abawden's quasiquote idea - then it would be
+   (update `(car (cdr ,'(1 2 3))) 4) ==> (1 4 3)
+   <drewc> Fare: i kind of like the quasiquote idea
+   <Fare> easiest way to recurse: go through the first arg and if it's
+   a known accessor, recurse.
+   <Fare> other way to recurse: find the (updating ) quasiquote-like,
+   and there better be only one, and make that the thing to return
+   updated.
+   <Fare> give a depth argument, recursing through the first
+   arguments.
+   <Fare> I guess the way to decide is to rewrite a few imperative
+   algorithms in functional style and see what works best...
+   <pkhuong_> Fare: ime, for that, it's either allowing assignment to
+   locals, or tail recursion everywhere.
+   <Fare> pkhuong_, so the updatef things would typically be as
+   arguments to the tail call.
+   <pkhuong_> right.
+   <Fare> or as something bound in a monad
+   <pkhuong_> ... something like a local binding.
+   <Fare> the next thing would be writing a generic updatef protocol
+   for updating the slots of a struct or a class
+   <Fare> which I suppose means a protocol for extracting initargs to
+   copy an instance, or something.
+   <Fare> though going through keywords would be... yuck
+   <Fare> (let ((x '(1 2 3)) (let-update ((x (car (cdr x)) 4)) x)) ==>
+   (1 4 3) ?
+   <Fare> (defstruct foo a b) (updatef (foo-a (make-foo :a 1 :b 2)) 3)
+   ==> #S(FOO :A 3 :B 2) ?
+   <Fare> of course, recursing going through the first argument isn't
+   friendly to IPS
+
+   <Fare> updatef [...] my pure answer to setf
+   <Fare> except the current version doesn't compose well enough.
+   <Fare> a *real* updatef should take three+ arguments: a "zipper"
+   interface, a "state" object, and one (or many) values to purely
+   insert at the place(s) indicated by the zipper into the structure.
+   <Fare> or maybe four. An interface, an object, a key, and values.
+   <Fare> (splitting the key from the interface)

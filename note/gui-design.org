@@ -1,0 +1,33 @@
+* Layout
+
+Does your app looks like a desktop app?
+
+http://dev.sencha.com/deploy/dev/examples/
+
+** Basic structure:
+
+*** Navigation
+
+- Global Nav
+  - Tree Nav
+    - Local Nav
+
+*** Toolbar
+
+*** Canvas
+
+*** Aux Tools
+
+*** Drawer
+
+Extra information
+
+** Manipulations
+
+- Collapse
+- Resize
+- On/Off
+- Overflow
+- Local Scrolling
+- Liquid Layout
+

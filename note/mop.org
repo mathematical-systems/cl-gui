@@ -1,0 +1,84 @@
+* vocabularies
+
+** macros
+
+defclass, defgeneric, defmethod
+
+** pre-defined classes
+
+standard-object, t, symbol
+
+** functions
+
+make-instance, initialize-instance, reinitialize-instance,
+shared-initialize, print-object, slot-value
+change-class update-instance-for-different-class
+
+** lexical functions
+
+call-next-method, next-method-p
+
+** class
+
+find-class, class-of, class-name
+class-direct-superclasses, class-direct-slots, class-precedence-list
+class-slots, class-direct-subclasses, specializer-direct-methods
+specializer-direct-generic-functions
+
+** slot
+
+slot-definition-name, slot-definition-initargs,
+slot-definition-initfunction, slot-definition-initform,
+slot-definition-readers, slot-definition-writers
+
+** generic-functions
+
+fdefinition,
+generic-function-name, generic-function-namlambda-list,
+generic-function-methods, 
+
+find-method
+method-generic-function, method-lambda-list, method-qualifiers,
+method-specializers, 
+
+NIL: method-body, method-environment
+
+* specialized metaobject classes
+
+1. define class inherits standard-class
+2. specialize :after methods
+   make-instance, etc.
+3. specify :metaclass
+
+** vocab
+standard metaobject classes
+specialized metaobject classes
+standard methods
+specialized methods
+class metaobject
+generic function metaobject
+method metaobject
+
+** class specialization
+
+- compute-class-precedence-list
+
+** slot specialization
+- compute-slots
+- compute-effective-slot-definition
+
+** other specialization
+
+- finalize-inheritance :after
+
+** slot access
+- slot-value-using-class
+
+** instance allocation
+- allocate-instance
+- slot-definition-allocation
+
+** generic-fucntion specialization
+TODO
+
+

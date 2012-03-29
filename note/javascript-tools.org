@@ -1,0 +1,20 @@
+* Debugging
+
+- Chrome
+
+  Develop tools
+
+- Firefox
+
+  Firebug + Illumination (extjs specific)
+
+* Coding
+
+- JSLint
+
+- google closure
+
+  a js optimizer and libraries
+
+  http://code.google.com/closure/
+

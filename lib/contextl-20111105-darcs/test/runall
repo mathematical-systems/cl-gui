@@ -1,0 +1,70 @@
+acl81 -s demo3.lisp
+acl81 -s spx.lisp
+acl81 -s grouped-layers.lisp
+acl81 -s fe.lisp
+acl81 -s fe2.lisp
+acl81 -s special-slots-1.lisp
+acl81 -s special-slots-2.lisp
+acl81 -s special-slots-3.lisp
+acl81 -s layer-gc.lisp
+acl81 -s dynenv.lisp
+acl82 -s demo3.lisp
+acl82 -s spx.lisp
+acl82 -s grouped-layers.lisp
+acl82 -s fe.lisp
+acl82 -s fe2.lisp
+acl82 -s special-slots-1.lisp
+acl82 -s special-slots-2.lisp
+acl82 -s special-slots-3.lisp
+acl82 -s layer-gc.lisp
+acl82 -s dynenv.lisp
+ccl -l demo3.lisp
+ccl -l spx.lisp
+ccl -l grouped-layers.lisp
+ccl -l fe.lisp
+ccl -l fe2.lisp
+ccl -l special-slots-1.lisp
+ccl -l special-slots-2.lisp
+ccl -l special-slots-3.lisp
+ccl -l layer-gc.lisp
+ccl -l dynenv.lisp
+clisp -i ~/.clisprc.lisp -on-error debug demo3.lisp
+clisp -i ~/.clisprc.lisp -on-error debug spx.lisp
+clisp -i ~/.clisprc.lisp -on-error debug grouped-layers.lisp
+clisp -i ~/.clisprc.lisp -on-error debug fe.lisp
+clisp -i ~/.clisprc.lisp -on-error debug fe2.lisp
+clisp -i ~/.clisprc.lisp -on-error debug special-slots-1.lisp
+clisp -i ~/.clisprc.lisp -on-error debug special-slots-2.lisp
+clisp -i ~/.clisprc.lisp -on-error debug special-slots-3.lisp
+clisp -i ~/.clisprc.lisp -on-error debug layer-gc.lisp
+clisp -i ~/.clisprc.lisp -on-error debug dynenv.lisp
+ecl -load demo3.lisp
+ecl -load spx.lisp
+ecl -load grouped-layers.lisp
+ecl -load fe.lisp
+ecl -load fe2.lisp
+ecl -load special-slots-1.lisp
+ecl -load special-slots-2.lisp
+ecl -load special-slots-3.lisp
+ecl -load layer-gc.lisp
+ecl -load dynenv.lisp
+lisp -load demo3.lisp
+lisp -load spx.lisp
+lisp -load grouped-layers.lisp
+lisp -load fe.lisp
+lisp -load fe2.lisp
+lisp -load special-slots-1.lisp
+lisp -load special-slots-2.lisp
+lisp -load special-slots-3.lisp
+lisp -load layer-gc.lisp
+lisp -load dynenv.lisp
+sbcl --load demo3.lisp
+sbcl --load spx.lisp
+sbcl --load grouped-layers.lisp
+sbcl --load fe.lisp
+sbcl --load fe2.lisp
+sbcl --load special-slots-1.lisp
+sbcl --load special-slots-2.lisp
+sbcl --load special-slots-3.lisp
+sbcl --load layer-gc.lisp
+sbcl --load dynenv.lisp

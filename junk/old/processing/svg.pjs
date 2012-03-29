@@ -1,0 +1,59 @@
+XMLElement svgxml;  
+PShape ps;  
+int x=0;  
+int y=0;  
+int xoffset=0;  
+int yoffset=0;  
+int xmark=0;  
+int ymark=0;  
+void setup() {  
+    size(200,200);  
+    noLoop();   
+  }   
+void draw() {  
+    background(255);  
+    stroke(0);  
+    for(int px=0; px<width; px+=10) { line(px,0,0,px); }  
+    for(int py=0; py<height; py+=10) { line(width,py,0,py+height); }  
+    stroke(#000066);  
+    for(int py=0; py<height;py+=10) { line(0,py,width,py); }  
+    if(ps!=null) { shape(ps,x-xoffset,y-yoffset,200,200); }  
+  }  
+void mousePressed() {  
+    xmark = mouseX;  
+    ymark = mouseY;   
+  }  
+void mouseDragged() {  
+    xoffset = xmark-mouseX;  
+    yoffset = ymark-mouseY;   
+    redraw();   
+  }  
+void mouseReleased() {  
+    if(xoffset!=0 || yoffset!=0) {  
+        x -= xoffset;  
+        y -= yoffset;  
+        xoffset=0;  
+        yoffset=0;   
+    }  
+    else {  
+        XMLElement path = svgxml.getChild(0);  
+        path.setAttribute("fill",getNextColor());  
+        bindSVG(svgxml);   
+    }  
+  }   
+String[] colors = {"#f0f8ff","#faebd7","#00ffff","...", ..., ... };  
+int color_len = colors.length;   
+int current_color = 0;    
+String getNextColor() {  
+    current_color = (current_color+1)%color_len;  
+    return colors[current_color];   
+  }   
+void buildFromSVG(String svg) {  
+    svgxml = new XMLElement(svg);  
+    bindSVG(svgxml);   
+  }   
+void bindSVG(XMLElement svg) {  
+    ps = new PShapeSVG(svgxml);  
+    redraw();   
+  }  
+    

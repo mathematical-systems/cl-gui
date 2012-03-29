@@ -1,0 +1,34 @@
+Closer to MOP Release Note
+
+v0.0 initial release
+
+v0.1
+- separated single implementation into several ones, one for each MOP implementation / implementation family, in order to improve maintainability
+- added support for LispWorks 4.4
+- removed extra method options from the LispWorks defmethod - it's a useful feature, but doesn't belong here
+- the automatically generated slot accessor methods in LispWorks closed over the wrong slot names. fixed. (obsolete because of the next issue)
+- In some cases, LispWorks deoptimizes slot access and reverts to the slot-value-using-class, etc., functions. This rendered the previously taken approach for fixing that protocol useless. Now, we have a much simpler fix. (Thanks to Jeff Caldwell.) Unfortunately, now some of the features that were previously fixed are missing again (correct initialization of accessor methods, accessor-method-slot-definition, reader-method-class and writer-method-class). Fortunately, LispWorks has already fixed those in 4.4, so this is no problem anymore in the long run.
+
+v0.2
+- The trick for reinitialization of generic-function-name or class-name in allegro, pcl, lispworks and mcl didn't work and had to be dropped.
+- In clisp, defgeneric does call ensure-generic-function-using-class. This wasn't detected before due to a bug in mop-feature-tests. (Thanks to Bruno Haible.)
+- Added the utility function ensure-method for programmatically creating methods, supported on all platforms.
+- The defmethod macro for LispWorks didn't have an implicit block with the name of the generic function. Fixed.
+- LispWorks 4.3 is not supported anymore. The existing conditionalizations are still available, though, and will be retained as long as they don't stand in the way of anything else.
+- Since I have to override some symbols from the common-lisp package, I provide two utility packages closer-common-lisp and closer-common-lisp-user, similar to common-lisp and common-lisp-user but with all the MOP symbols added. The default packages additionally added by the various Common Lisp implementations are not added here. (I think that's cleaner.)
+- Handling of pseudo-anonymous classes in CMU CL and SBCL had a copy&paste bug: The name was changed again in reinitialize-instance.
+- TYPEP and SUBTYPEP don't work as expected in CMU CL and SBCL in conjunction with class metaobjects. Same for MCL, but for different reasons. So I have shadowed them and provide a new definition. (In CMU CL and SBCL, class metaobject are not considered types. In MCL, type information for class metaobjects is not available at some stages. Unfortunately, it doesn't seem to be possible to fix this with finalize-inheritance, so I have to revert to membership tests on the class precedence list.)
+- MCL also doesn't like anonymous classes. So I have added a fix for that.
+- I have incorrectly reported that MAKE-METHOD-LAMBDA is unreliable in CMU CL and SBCL. This was due to a bug in my test suite. However, it is required that the respective generic function and method metaobject classes and make-method-lambda definitions are part of the compilation environment when you want to use them. I have updated the respective sections in features.lisp and features.txt.
+- Switched to an MIT/BSD-style license.
+
+v0.3
+- Now supports OpenMCL 1.0, LispWorks 4.4.6, SBCL 0.9.7 - 0.9.9, CMUCL 19C, Allegro 8.0, clisp 2.37 and 2.38.
+- STANDARD-CLASS and FUNCALLABLE-STANDARD-CLASS are now compatible in SBCL. This required some changes in the PCL support.
+- Dropped the reports for LispWorks 4.3.
+- Allegro 6.2 is not supported anymore. The existing conditionalizations are still available, though, and will be retained as long as they don't stand in the way of anything else.
+- The incorrect specialization of slot-boundp-using-class and slot-makunbound-using-class on symbols instead of slot definition metaobjects in Allegro is fixed.
+- SBCL 0.9.7 has improved a lot wrt MOP compatibility. This required some changes in the PCL support.
+- The lack of extensible :allocation kinds in Allegro is fixed. (Covers 6.2, 7.0 and 8.0. Thanks to John Foderaro for giving me the important hint on how to solve this.)
+
+After version 0.3, there are no separate release notes anymore, but they will be generated automatically by darcs in the future.

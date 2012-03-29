@@ -1,0 +1,11 @@
+(ps ((@ *ext application)
+     (create name "AM"
+             app-folder "app"
+             controllers '("Users")
+             launch (lambda ()
+                      ((@ *ext create)
+                       "Exit.container.Viewport"
+                       (create layout "fit"
+                               items (list (create xtype "panel"
+                                                   title "Users"
+                                                   html "List of users will go here"))))))))

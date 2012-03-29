@@ -1,0 +1,3 @@
+* build
+
+./configure -j 2 --dest-cpu=x64 

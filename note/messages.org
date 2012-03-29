@@ -1,0 +1,40 @@
+* Lisp <- Javascript
+
+** update
+{type: 'update',
+ data: ...}
+
+** event
+{type: 'event',
+ event: name,
+ args: ...}
+
+** funcall
+{type: 'funcall',
+ package: name,
+ function: name,
+ args: ...}
+
+** eval
+{type: 'eval',
+ code: ...}
+
+* Lisp -> Javascript
+
+** full
+{type: 'full',
+ data: ...}
+
+** update
+{type: 'update',
+ data: ...}
+
+** event
+{type: 'event',
+ event: name,
+ args: ...}
+
+** eval
+{type: 'eval',
+ code: ...}
+

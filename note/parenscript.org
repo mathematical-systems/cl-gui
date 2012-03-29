@@ -1,0 +1,153 @@
+* configurations and capability
+
+- *js-target-version*
+- *defined-operators*
+- *PS-PRINT-PRETTY*
+- *INDENT-NUM-SPACES*
+
+
+* symbol conversion
+
+use named-readtable and set case to :invert
+
+- (named-readtable:find-readtable :parescript)
+
+* namespace
+
+- (setf (ps:ps-package-prefix package-name) js-namespace-prefix)
+
+* identifier obfuscation
+
+* statements, expressions, and return
+
+  Some Parenscript special forms compile to expressions, while others
+  can only compile to statements.
+
+* object literals
+
+e.g. (create foo "bar" :blorg 1)
+=> { foo: 'bar', 'blorg': 1}
+
+* dot syntax
+
+** getprop
+(getprop obj 'foo)
+=> obj.foo;
+
+(getprop obj foo)
+=> obj[foo];
+
+(getprop element i 'child-node 0 'node-value)
+=> element[i].childNode[0].nodeValue;
+
+** @
+The convenience macro @ quotes all its given symbol slot-specifiers to
+save typing:
+
+(@ an-object foo bar)
+anObject.foo.bar;
+(@ foo bar child-node 0 node-value)
+foo.bar.childNode[0].nodeValue;
+
+** chain
+
+CHAIN can be used to conveniently chain together accessors and
+function calls:
+
+(chain foo (bar x y) 0 baz)
+=>foo.bar(x, y)[0].baz;
+
+** with-slots
+WITH-SLOTS can be used to bind the given slot-names to a symbol macro
+that will expand into a GETPROP form at expansion time:
+
+(with-slots (a b c) this
+  (+ a b c))
+=>
+this.a + this.b + this.c;
+
+* arrays
+- (array ...)
+- (list ...)
+- ([] ...)
+- (make-array ...)
+- length
+- aref
+- elt
+- destructuring-bind
+- concatenate
+- append
+
+* functions and multiple values
+- defun
+- lambda
+- flet
+- labels
+- values
+- multiple-value-bind
+- apply
+- funcall
+- this
+
+* control structure
+- return
+- throw
+- try ... (:catch ...) (:finally ...)
+- ignore-errors
+- switch
+
+* variable binding
+- let
+- let*
+- defvar
+- var (lexically-scoped global variable)
+
+* assignment
+- defsetf
+- defun (setf xxx)
+
+* iteration
+- do
+- do*
+- dotimes
+- dolist
+- for-in
+- while
+- loop
+
+* macros
+- defmacro
+- defpsmacro (in lisp code)
+- defmacro+ps (in both lisp and parenscript)
+- import-macros-from-lisp
+- macrolet
+- define-ps-symbol-macro
+- symbol-macrolet
+
+* gensym
+- ps-gensym
+- with-ps-gensyms
+- ps-once-only
+- *ps-gensym-counter*
+
+* utilities
+** dom
+- inner-html
+- uri-encode
+- attribute
+- offset
+- scroll
+- inner
+- client
+** html generation
+
+* runtime
+- member
+- map
+- mapcar
+- reduce
+- map-into
+- set-difference
+- *ps-lisp-library*
+
+

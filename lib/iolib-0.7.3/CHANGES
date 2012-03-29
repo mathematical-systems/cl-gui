@@ -1,0 +1,56 @@
+-*- mode: outline; fill-column: 78 -*-
+
+* Changes since 0.7.2:
+
+** Bug fixes:
+- Fix IOLIB.SYSCALLS::PARSE-NAME-AND-OPTIONS (reported by Marshall McLuhan)
+
+
+
+* Changes since 0.7.1:
+
+** Bug fixes:
+- Don't redefine Alexandria functions (patch by Nikodemus Siivola)
+
+
+
+* Changes since 0.7.0:
+
+** Bug fixes:
+- Only import a few symbols from ASDF into IOLIB.ASDF, which sometimes caused
+  problems with ASDF2
+- Fix compilation on OSX
+
+
+
+* Changes since 0.6.0:
+
+** API changes
+- IOLIB.SOCKETS:LOOKUP-HOST was renamed to LOOKUP-HOSTNAME
+- IOLIB.SOCKETS:IPV6-SOCKET-P was renamed to SOCKET-IPV6-P
+- When creating an AF_LOCAL socket, IOLIB.SOCKETS:MAKE-SOCKET accepts :FILE as
+  :TYPE synonim of :LOCAL
+- IOLIB.SOCKETS:ACCEPT-CONNECTION : keyword arg TIMEOUT has been coalesced
+  into WAIT
+- IOLIB.SOCKETS:CONNECT : keyword arg TIMEOUT has been coalesced into WAIT
+
+** New features
+- Add support for abstract UNIX addresses (patch by Julian Stecklina)
+- UNIX addresses are now printed as strings. Abstract addresses have a leading #\@
+
+** Bug fixes:
+- EVENT-DISPATCH now calculates the distance to the next timer correctly
+  (reported by Ariel Badichi)
+- fixed possible fd load in the the select() multiplexer (reported by Ariel
+  Badichi)
+- reading from socket streams with non-blocking FDs now works (reported by
+  Chaitanya Gupta)
+- make RESOLVER-ERROR actually a subtype of IOLIB-ERROR (reported by Ariel Badichi)
+- socket syscalls that return EINTR now work
+- when setting send/receive timeouts on blocking sockets, stream methods now
+  properly signal ISYS:EWOULDBLOCK upon timeout
+- fix bug in HEAP-PARENT, used in the multiplexer (reported by Ole Arndt on sbcl-devel)
+- fix define-designator for when *print-case* is :downcase.
+
+** Misc
+- Sources have been reorganized, ASDF system files are now inside src/

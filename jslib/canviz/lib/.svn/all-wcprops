@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/80/canviz/trunk/lib
+END
+AcceptEncoding.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/38/canviz/trunk/lib/AcceptEncoding.class.php
+END
+AcceptMime.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/38/canviz/trunk/lib/AcceptMime.class.php
+END
+AcceptCharset.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/38/canviz/trunk/lib/AcceptCharset.class.php
+END
+AcceptAbstract.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/80/canviz/trunk/lib/AcceptAbstract.class.php
+END
+AcceptLanguage.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/38/canviz/trunk/lib/AcceptLanguage.class.php
+END

@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/256/canviz/trunk/examples/hello_world
+END
+new.html.in
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/256/canviz/trunk/examples/hello_world/new.html.in
+END
+styles_inner.css
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/256/canviz/trunk/examples/hello_world/styles_inner.css
+END
+old.html.in
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/256/canviz/trunk/examples/hello_world/old.html.in
+END
+styles_outer.css
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/256/canviz/trunk/examples/hello_world/styles_outer.css
+END
+scripts_common.js
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/256/canviz/trunk/examples/hello_world/scripts_common.js
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/256/canviz/trunk/examples/hello_world/index.html
+END
+scripts_new.js
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/256/canviz/trunk/examples/hello_world/scripts_new.js
+END
+graph.gv
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/256/canviz/trunk/examples/hello_world/graph.gv
+END

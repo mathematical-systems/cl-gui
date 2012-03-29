@@ -1,0 +1,11 @@
+Version 0.1.2
+2011-08-31
+Make pathname creation conformant (thanks to Juan José Garcia-Ripoll)
+
+Version 0.1.1
+2008-07-24
+Make ADD-HANGUL-NAMES faster for ClozureCL
+
+Version 0.1.0
+2008-07-24
+Initial release

@@ -1,0 +1,13 @@
+2011-11-09 | huang | v0.2 release
+
+* library updated to latest stable release
+* remove nodejs dependency
+  use hunchentoot/hunchensocket/hunchen.io for HTTP/WebSocket server
+* add new-project.sh
+* cleanup load dependency mess
+* server-side message type semantics change
+  - event for async message, funcall for sync message
+  - both event and funcall message handler must be registered (for security)
+* add session information (use hunchentoot sessions)
+* combine HTTP and WebSocket in the same port
+

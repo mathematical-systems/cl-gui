@@ -1,0 +1,60 @@
+* Loading
+
+1. include ext-base.js
+2. include ext-all-debug.js (ext-all for release)
+
+
+* Visualization
+
+Unified interface of SVG, VML, Canvas
+
+** Surface
+
+- primitives:
+
+Ellipses, rectangles, complex paths, text, images, gradients ...
+
+** Sprite
+
+Abstracted drawing elements
+Event support (extends Observable)
+Transforms (Rotate, Translate, Scale)
+Animation supported through Ext.fx
+SpriteComposites
+
+** DrawComponent
+
+Extends Ext.Component
+Engine preference via feature detection (SVG -> VML -> Canvas)
+Customizable engine preference order
+Layout participation
+
+
+* Data and Direct
+
+- Ext.Direct
+  - batching by default
+  - parallel
+  - Improves debugging
+  - Allows centralized security policies
+  
+
+* ExtJS 4 new
+
+- charting
+- accessiblity and RtoL langauge
+- theming
+- upgraded components
+- any layout in Form
+- advanced data package
+- model generator (sencha commands)
+  - Application
+  - Model
+  - View
+  - Controller
+  - Store
+
+
+* MVC
+
+- you can use build tools to create optimized version

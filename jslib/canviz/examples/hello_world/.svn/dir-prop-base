@@ -1,0 +1,11 @@
+K 10
+svn:ignore
+V 72
+old.html
+old.html.tmp
+graph-cmapx.html
+graph-xdot.gv
+graph.png
+new.html
+
+END

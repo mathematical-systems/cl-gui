@@ -1,0 +1,234 @@
+* W3C/IETF standard (2011/9 draft)
+
+** benefit
+
+- full duplex
+- both UTF-8 strings and binary frames can be sent in any direction at
+  the same time
+- connection established by "upgrading" from HTTP to websocket
+  protocol (runs via 80/443)
+  - firewall friendly
+  - HTTP-compatible handshake
+  - integrates with cookie based authentication
+- ws:// & wss://
+- each frame only 2 bytes of overhead
+
+** IDL for websocket API
+
+[Constructor(DOMString url, optional DOMString protocols),
+ Constructor(DOMString url, optional DOMString[] protocols)]
+interface WebSocket : EventTarget {
+  readonly attribute DOMString url;
+
+  // ready state
+  const unsigned short CONNECTING = 0;
+  const unsigned short OPEN = 1;
+  const unsigned short CLOSING = 2;
+  const unsigned short CLOSED = 3;
+  readonly attribute unsigned short readyState;
+  readonly attribute unsigned long bufferedAmount;
+
+  // networking
+  [TreatNonCallableAsNull] attribute Function? onopen;
+  [TreatNonCallableAsNull] attribute Function? onerror;
+  [TreatNonCallableAsNull] attribute Function? onclose;
+  readonly attribute DOMString extensions;
+  readonly attribute DOMString protocol;
+  void close([Clamp] optional unsigned short code, optional DOMString reason);
+
+  // messaging
+  [TreatNonCallableAsNull] attribute Function? onmessage;
+           attribute DOMString binaryType;
+  void send(DOMString data);
+  void send(ArrayBuffer data);
+  void send(Blob data);
+};
+
+
+* Coding guide
+- reopen
+  application must be prepared to reopen connection if close event was
+  triggered unexpectedly
+  - idle timeout
+  - network errors
+- keep-alive
+  - send keep-alive messages to avoid close due to timeout
+  - no timeout discovery available on the websocket
+  - handling close still needed
+- queue
+  - buffer messages that fail to send due to a transient network
+    problem
+  - resend queue when connection is restored
+  - important for both server and client
+- timeouts
+  - essential for networking
+  - can't let queue grow forever
+  - application need
+  - need to implement an explicit close message for application to
+    distinguish between network failures and an orderly close
+- message retries
+  - due to send/close racing
+  - acknowledge message must be sent for each message
+- more problems
+  - if server goes down client will loop trying to reconnect
+  - backoff for retry
+  - message size can cause connection to die if it exceedes some
+    resource limit on client or server (can cause infinite loop!)
+
+* Compatibility
+
+- firefox 6+
+- chrome 14+
+- safari 5+
+- ie 9+
+
+* Examples
+
+** 1
+
+var mySocket = new WebSocket("http://www.example.com/socketserver", ["protocol1", "protocol2"]);
+
+// Send text to all users through the server
+
+function sendText() {
+  var msg = {
+    type: "message",
+    text: document.getElementById("text").value,
+    id: clientID,
+    date: Date.now()
+  };
+
+  mySocket.send(JSON.stringify(msg));
+  document.getElementById("text").value = "";
+}
+
+mySocket.onmessage = function(e) {
+  console.log(e.data);
+}
+
+mySocket.close();
+
+* Handshake protocol
+
+** draft-ietf-hybi-thewebsocketprotocol-06
+
+- client sends a WS handshake request
+
+GET /ws HTTP/1.1
+Host: pmx
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Version: 6
+Sec-WebSocket-Origin: http://pmx
+Sec-WebSocket-Extensions: deflate-stream
+Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==
+
+- server sends a WS handshake response
+p
+HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=
+
+- details
+
+The client sends a Sec-WebSocket-Key which is base64 encoded. To this
+key the magic string "258EAFA5-E914-47DA-95CA-C5AB0DC85B11" is
+appended, hashed with SHA1 and then base64 encoded.
+
+Notice that the Sec-WebSocket-Key is base64 encoded but is not decoded
+by the server. The result is then replied in the header
+"Sec-WebSocket-Accept".
+
+e.g.
+
+"x3JJHMbDL1EzLkh9GBhXDw==258EAFA5-E914-47DA-95CA-C5AB0DC85B11" string
+hashed by SHA1 gives "1d29ab734b0c9585240069a6e4e3e91b61da1969"
+hexadecimal value.
+
+Unix command `printf
+"\x1d\x29\xab\x73\x4b\x0c\x95\x85\x24\x00\x69\xa6\xe4\xe3\xe9\x1b\x61\xda\x19\x69" |
+base64` prints "HSmrc0sMlYUkAGmm5OPpG2HaGWk="
+
+* socket.io websocket implementation
+
+** supported versions
+
+- 7 (hybi-07-12)
+- 8 (hybi-07-12)
+- 13 (hybi-16)
+- default (hixie-76)
+
+** events
+
+- data
+- ping
+- close
+- error
+
+** diff (hybi-07-12/hybi-16)
+
+- 07-12: origin
+- 16: sec-websocket-origin
+
+** diff (hixie-76/hybi-07-12)
+
+- hybi-07-12 has "ping" event
+- hybi-07-12 uses sha-1
+- hixie-76 uses md5
+
+* pywebsocket implementation
+
+VERSION_HYBI00 = 0
+VERSION_HYBI01 = 1
+VERSION_HYBI02 = 2
+VERSION_HYBI03 = 2
+VERSION_HYBI04 = 4
+VERSION_HYBI05 = 5
+VERSION_HYBI06 = 6
+VERSION_HYBI07 = 7
+VERSION_HYBI08 = 8
+VERSION_HYBI09 = 8
+VERSION_HYBI10 = 8
+VERSION_HYBI11 = 8
+VERSION_HYBI12 = 8
+VERSION_HYBI13 = 13
+VERSION_HYBI14 = 13
+VERSION_HYBI15 = 13
+VERSION_HYBI16 = 13
+VERSION_HYBI17 = 13
+
+* supporting multiple versions
+
+The following example demonstrates version negotiation described
+   above:
+
+        GET /chat HTTP/1.1
+        Host: server.example.com
+        Upgrade: websocket
+        Connection: Upgrade
+        ...
+        Sec-WebSocket-Version: 25
+
+   The response from the server might look as follows:
+
+        HTTP/1.1 400 Bad Request
+        ...
+        Sec-WebSocket-Version: 13, 8, 7
+
+   Note that the last response from the server might also look like:
+
+        HTTP/1.1 400 Bad Request
+        ...
+        Sec-WebSocket-Version: 13
+        Sec-WebSocket-Version: 8, 7
+
+   The client now repeats the handshake that conforms to version 13:
+
+        GET /chat HTTP/1.1
+        Host: server.example.com
+        Upgrade: websocket
+        Connection: Upgrade
+        ...
+        Sec-WebSocket-Version: 13
+

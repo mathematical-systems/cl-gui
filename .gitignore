@@ -1,0 +1,6 @@
+fasl/*
+*.fasl
+*.log
+*.core
+*~
+nogit/*

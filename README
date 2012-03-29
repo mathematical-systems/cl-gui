@@ -1,0 +1,37 @@
+-*- mode: org -*-
+
+* quick setup
+
+** install nodejs
+
+cd jslib/nodejs-v0.4.8/
+./configure --without-ssl
+make
+make install
+
+** install npm
+curl http://npmjs.org/install.sh | sh
+
+** install modules (for each proejct)
+# (in the same directory of server.js)
+npm install socket.io@0.8.5
+npm install connect
+# modules will be installed at ./node_modules
+
+* quick start
+
+** start nodejs (http server + websocket server)
+
+cd src/nodejs/
+node server.js
+# this will start http server at 8000 and websocket server at 8001
+# tcp port 3434 will be open for incoming lisp connections
+
+** start lisp
+
+(load "loader")
+(cl-gui:connect-to-server)
+
+* deployment
+TODO
+

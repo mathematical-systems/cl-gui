@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
+  
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">  
+    <head>  
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+        <title>My Processing Page</title>  
+        <script type="text/javascript" src="processing.js"></script>  
+  
+        <script type="text/javascript">  
+            function drawSomeText(id) {  
+                var pjs = Processing.getInstanceById(id);  
+                var text = document.getElementById('inputtext').value;  
+                pjs.drawText(text); }  
+        </script>  
+    </head>  
+    <body>  
+        <canvas id="mysketch2" data-processing-sources="js-integration.pjs"/></canvas>  
+  
+        <input type="textfield" value="my text" id="inputtext"/>  
+        <button onclick="drawSomeText('mysketch2')"/> Draw </button>
+    </body>  
+</html>

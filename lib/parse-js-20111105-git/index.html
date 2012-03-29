@@ -1,0 +1,133 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>parse-js / A JavaScript parser</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <style type="text/css">
+      p.def {
+        margin-top: 1.5em;
+        font-family: courier;
+      }
+      p.def span {
+        color: #555;
+        font-weight: bold;
+        font-family: tahoma, arial, sans-serif;
+        font-size: .8em;
+      }
+      .desc {margin-left: 1em;}
+      body {
+        max-width: 50em;
+        margin: 0;
+        padding: 3em 6em;
+        color: black;
+      }
+      h1 {border-bottom: 2px solid #00DD00;}
+    </style>
+  </head>
+  <body>
+    <h1>parse-js</h1>
+
+    <p><code>parse-js</code> is a Common Lisp package for parsing
+    JavaScript — <a
+    href="http://www.mozilla.org/js/language/E262-3.pdf">ECMAScript
+    3</a>, to be more precise. It is released under a zlib-style <a
+    href="LICENSE">licence</a>. For any feedback, contact me: <a
+    href="mailto:marijnh@gmail.com">Marijn Haverbeke</a>.</p>
+
+    <p>The library can be <a
+    href="http://marijn.haverbeke.nl/parse-js/parse-js.tgz">downloaded</a>,
+    checked out from the <a
+    href="http://marijn.haverbeke.nl/git/parse-js">git repository</a>,
+    or installed with <a
+    href="http://www.cliki.net/ASDF-Install">asdf-install</a>.</p>
+
+    <h2>News</h2>
+
+    <p><em>03-01-2011:</em> New release. Lots of comformance fixes,
+    driven
+    by <a href="http://marijnhaverbeke.nl/cl-javascript">CL-JavaScript</a>
+    and <a href="https://github.com/mishoo/uglifyjs">UglifyJS</a>
+    work. <code>parse-js-string</code> is deprecated now
+    (<code>parse-js</code> accepts strings), and basic support for
+    ECMAScript 5 has been added.</p>
+
+    <p><em>11-06-2010:</em> Move from darcs to git for version
+    control, update release tarball.</p>
+
+    <h2>Reference</h2>
+
+    <p class="def" id="parse-js">
+      <span>function</span> parse-js (input &amp;key ecma-version strict-semicolons reserved-words)
+      <br/>&#8594; syntax-tree
+    </p>
+
+    <p class="desc">Reads a program from a string or a stream, and
+    produces an abstract syntax tree, which is a nested structure
+    consisting of lists starting with keywords. The exact format of
+    this structure is not very well documented, but the file <a
+    href="as.txt">as.txt</a> gives a basic description.</p>
+
+    <p class="desc">The keyword arguments can be used to influence the
+    parsing mode. <code>emca-version</code> can be <code>3</code> or
+    <code>5</code>, and influences the standard that is followed. The
+    default is 3. Support for version 5 is incomplete at this time.
+    When <code>strict-semicolons</code> is true, the parser will
+    complain about missing semicolons, even when they would have been
+    inserted by 'automatic semicolon insertion' rules. Finally, if
+    <code>reserved-words</code> is true, the parser will complain
+    about 'future reserved words', such as <code>class</code> being
+    used.</p>
+
+    <p class="def" id="js-parse-error">
+      <span>class</span> js-parse-error
+    </p>
+
+    <p class="desc">The type of errors raised when invalid input is
+    encountered. Inherits from <a
+    href="http://www.lispworks.com/documentation/HyperSpec/Body/e_smp_er.htm"><code>simple-error</code></a>,
+    and has <code>js-parse-error-line</code> and
+    <code>js-parse-error-char</code> accessors that can be used
+    to read the location at which the error occurred.</p>
+
+    <p class="def" id="lex-js">
+      <span>function</span> lex-js (stream)
+      <br/>&#8594; function
+    </p>
+
+    <p class="desc">A JavaScript tokeniser. The function returned can
+    be called repeatedly to read the next token object. See below for
+    a description of these objects. When the end of the stream is
+    reached, tokens with type <code>:eof</code> are returned.</p>
+
+    <p class="def" id="token-type">
+      <span>function</span> token-type (token)
+      <br/>&#8594; keyword
+    </p>
+
+    <p class="desc">Reader for the type of token objects. Types are
+    keywords (one of <code>:num :punc :string :operator :name :atom
+    :keyword :eof</code>).</p>
+
+    <p class="def" id="token-value">
+      <span>function</span> token-value (token)
+      <br/>&#8594; value
+    </p>
+
+    <p class="desc">Reader for the content of token objects. The type
+    of this value depends on the type of the token &#x2015; it holds
+    strings for names, for example, and numbers for number tokens.</p>
+
+    <p class="def" id="token-line">
+      <span>function</span> token-line (token)
+      <br/>&#8594; number
+    </p>
+
+    <p class="desc">The line on which a token was read.</p>
+
+    <p class="def" id="token-char">
+      <span>function</span> token-char (token)
+      <br/>&#8594; number
+    </p>
+
+    <p class="desc">The character at which a token starts.</p>
+  </body>
+</html>

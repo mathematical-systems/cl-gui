@@ -1,0 +1,10 @@
+* difference between JS and CL
+
+- variable scoping
+
+- return from function
+
+- block
+
+* function redefinition doesn't work in eval in JS
+

@@ -1,0 +1,16 @@
+* Extensions to Webkit
+
+- Full filesystem access allows you to read and manage files in a more
+  web-independent way.
+
+- Internal SQLite database access makes storing local data a simple
+  task.
+
+- While AJAX is still available, the network API allows you to
+  interface with HTTP at a much lower level, or even open socket
+  connections to other services manually.
+
+- Titanium includes wrappers around Desktop features such as
+  notifications, tray icons, and window menus so you can create more
+  natural applications for all major operating systems.
+

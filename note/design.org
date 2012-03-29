@@ -1,0 +1,63 @@
+* Goals
+
+- GUI toolkit
+- able to integrate 3rd party javascript libraries
+- lisp->javascript code generation
+- transparent lisp <-> javascript object/event-synchronizing
+- server<->client function invocation
+- multiple clients synchronization
+- SSL/sockets
+- Charting/Visualization toolkit
+- Full control of objects in the browser (including client-side only
+  GUI objects etc.)
+
+* features
+
+- fast DOM access (jquery operator for example)
+- easy object creation
+- direct communication (socket<->websocket)
+
+* Optionals
+
+- offline viewing
+- independent to libraries
+- caching of objects
+- local storage
+- desktop features
+  - notification
+  - tray icons
+
+* Thoughts
+
+- whole world
+  - client-side only objects
+  - server-side only objects
+  - shared objects
+- GUI toolkit links client-side model to the views
+- changes in the shared objects will be informed in both ways
+   - need to resolve conflicts
+
+
+* Components
+
+- web server (sending html/css/js)
+  - hunchentoot/aserve
+  - nodejs
+
+- socket-like communication server
+  - clws
+  - nodejs (socket.io for cl, websocket for client)
+  - web server (server-side push)
+
+* Similar projects
+
+- clojurescript
+
+  https://github.com/clojure/clojurescript
+  http://clojure.com/blog/2011/07/22/introducing-clojurescript.html
+
+- GWT
+
+  http://code.google.com/webtoolkit/
+
+

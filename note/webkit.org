@@ -1,0 +1,37 @@
+* Components
+
+- WebCore
+  - DOM
+  - HTML
+  - CSS
+  - SVG
+  - rendering
+
+- JavascriptCore
+
+  Chrome = WebCore + V8
+
+* Platform Abstractions
+
+Compile-time abstraction
+
+Network
+Unicode
+Clipboard
+*Graphics*
+Theme
+Events
+Thread
+Geolocation
+Timer
+
+** Graphics stack
+
+- Mac -> CoreGraphics
+
+- Chromium -> Skia
+
+- Qt -> QPainter
+
+- Gtk -> Cairo
+

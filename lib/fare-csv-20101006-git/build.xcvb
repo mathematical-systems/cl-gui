@@ -1,0 +1,8 @@
+#+xcvb
+(module
+ (:fullname
+  "fare-csv"
+  :depends-on
+  ("package" "csv")
+  :supersedes-asdf
+  ("fare-csv")))
